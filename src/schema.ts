@@ -2,12 +2,11 @@
  export const typeDefs = `#graphql
 
     type Query {
-        hello: String!
-        ping: String!
         users: [User!]!
         posts: [Post!]!
         user(id: ID!): User
         post(id: ID!): Post
+        me: User
     }
 
     type Post {
@@ -19,12 +18,16 @@
         published: Boolean!
     }
 
+    type UserArgs{
+    token: String
+    }
+
     type Mutation {
         signup(
             name: String!
             email: String!
             password: String!
-        ): User
+        ): UserArgs
         createPost(
             title: String!
             content: String!
