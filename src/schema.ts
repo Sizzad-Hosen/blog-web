@@ -18,21 +18,38 @@
         published: Boolean!
     }
 
-    type UserArgs{
+    type AuthPayload{
     token: String
     }
 
+    type PostPayload{
+     userError:String
+     post:Post
+    }
+   input PostInput{
+    title: String
+    content: String
+    }
     type Mutation {
         signup(
             name: String!
             email: String!
             password: String!
-        ): UserArgs
-        createPost(
-            title: String!
-            content: String!
-            authorId: ID!
-        ): Post
+        ): AuthPayload
+        
+        signin(
+            email: String!
+            password: String!
+        ): AuthPayload
+
+        addPost(
+          post: PostInput!
+        ): PostPayload
+
+        updatePost(
+        postId:ID!
+            post: PostInput
+        ): PostPayload
     }
 
     type User {
