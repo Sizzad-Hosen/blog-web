@@ -3,7 +3,7 @@
 
     type Query {
         users: [User!]!
-        posts: [Post!]!
+        posts: [Post]
         user(id: ID!): User
         post(id: ID!): Post
         me: User
@@ -49,6 +49,10 @@
         updatePost(
         postId:ID!
             post: PostInput
+        ): PostPayload
+
+        publishPost(
+        postId:ID!
         ): PostPayload
     }
 

@@ -1,34 +1,37 @@
-import  Jwt  from "jsonwebtoken";
-
-
-
 import jwt, { JwtPayload } from "jsonwebtoken";
 
-export const createToken = async(payload:{userId:string },secret:string)=>{
 
-  const token =   await Jwt.sign(payload,secret,{expiresIn:process.env.JWT_EXPIRES_IN || '7d'});
-
-return token;
+const generateToken = async (payload: { userId: number }, secret: string) => {
+    const token = jwt.sign(payload, secret, { expiresIn: '1d' });
+    return token;
 
 }
 
-export const verifyToken = (authHeader?: string): JwtPayload => {
-  if (!authHeader) {
-    throw new Error("Authorization header missing");
-  }
+export const getUserInfoFromToken  = (authHeader?: string): JwtPayload | null => {
+  if (!authHeader) return null;
 
-  const token = authHeader.split(" ")[1]; // Bearer TOKEN
+  const token = authHeader.startsWith("Bearer ")
+    ? authHeader.split(" ")[1]
+    : null;
 
-  if (!token) {
-    throw new Error("Token missing");
-  }
-console.log(token)
+  if (!token) return null;
+
+  console.log("Token:", token)
+
   try {
-    return jwt.verify(
-      token,
-      process.env.SECRET_KEY as string
-    ) as JwtPayload;
-  } catch (error) {
-    throw new Error("Invalid or expired token");
+    const userInfo = jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayload;
+
+    console.log("User Info:", userInfo); // decoded payload
+
+    return userInfo
+
+  } catch (err) {
+    return null;
   }
 };
+
+
+export const jwtHelper = {
+    generateToken,
+    getUserInfoFromToken
+}
