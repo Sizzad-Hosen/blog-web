@@ -2,12 +2,26 @@
  export const typeDefs = `#graphql
 
     type Query {
-        users: [User!]!
-        posts: [Post]
-        user(id: ID!): User
-        post(id: ID!): Post
+        post(id: ID): Post
         me: User
+        users: [User]
+        posts: [Post]
+        profile(userId: ID!): Profile
     }
+
+    type User{
+    id:ID!
+    name:String!
+    email:String!
+    }
+
+    type Profile {
+        id: ID!
+        bio: String!
+        createdAt: String!
+        user: User!
+}
+ 
 
     type Post {
         id: ID!
@@ -18,56 +32,60 @@
         published: Boolean!
     }
 
-    type AuthPayload{
-    token: String
-    }
-
-    type PostPayload{
-     userError:String
-     post:Post
-    }
-   input PostInput{
-    title: String
-    content: String
-    }
+    
+    
     type Mutation {
         signup(
             name: String!
             email: String!
             password: String!
-        ): AuthPayload
-        
-        signin(
-            email: String!
-            password: String!
-        ): AuthPayload
+            ): AuthPayload
+            
+            signin(
+                email: String!
+                password: String!
+                ): AuthPayload
 
-        addPost(
-          post: PostInput!
-        ): PostPayload
-
-        updatePost(
-        postId:ID!
-            post: PostInput
-        ): PostPayload
-
-        publishPost(
-        postId:ID!
-        ): PostPayload
-    }
-
-    type User {
-        id: ID!
-        name: String!
-        email: String!
-        posts: [Post]!
-        createdAt: String!
-    }
-
-    type Profile {
-        id: ID!
-        bio: String!
-        createdAt: String!
-        user: User!
-    }
-`; 
+                addPost(
+                    post: PostInput!
+                    ): PostPayload
+                    
+                    updatePost(
+                        postId:ID!
+                        post: PostInput
+                        ): PostPayload
+                        
+                        publishPost(
+                            postId:ID!
+                            ): PostPayload
+                            }
+                            
+                            type User {
+                                id: ID!
+                                name: String!
+                                email: String!
+                                posts: [Post]!
+                                createdAt: String!
+                                }
+                                
+                                type Profile {
+                                    id: ID!
+                                    bio: String!
+                                    createdAt: String!
+                                    user: User!
+                                    }
+                                    type AuthPayload{
+                                    token: String
+                                    }
+                                
+                                    type PostPayload{
+                                     userError:String
+                                     post:Post
+                                    }
+                                
+                                
+                                   input PostInput{
+                                    title: String
+                                    content: String
+                                    }
+                                    `; 
